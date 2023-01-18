@@ -1,10 +1,10 @@
 package personal.controllers;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import personal.model.Repository;
 import personal.model.User;
+
+import java.util.List;
+
 
 public class UserController {
     private final Repository repository;
@@ -34,7 +34,7 @@ public class UserController {
         return result;
     }
 
-    public void updateUser(String idNumber, User newGuy) throws Exception {
+    public void updUser(String idNumber, User newGuy) throws Exception {
         idPresenceValidation(idNumber);
         newGuy.setId(idNumber);
         validateUserId(newGuy);
@@ -42,24 +42,32 @@ public class UserController {
     }
 
     private void validateUser(User user) throws Exception {
-        if (user.getFirstName().contains(" "))
-            throw new Exception("User name has unacceptable characters");
-        if (user.getLastName().contains(" "))
-            throw new Exception("User lastname has unacceptable characters");
-    }
+        if (user.getFirstName().contains(" ")){
+            throw new Exception("User  name has no unacceptable characters");
+        }
+        if (user.getLastName().contains(" ")){
+            ;throw new Exception("User  lastname has no unacceptable characters");
+        }
 
-    private void validateUserId (User user) throws Exception{
-        if (user.getId().isEmpty())
+    }
+    private void validateUserId(User user) throws Exception {
+        if (user.getId().isEmpty()){
             throw new Exception("User has no id");
+        }
         validateUser(user);
     }
 
-    public void idPresenceValidation (String inputId) throws Exception {
+    public void idPresenceValidation(String inputId) throws Exception {
         List<User> users = repository.getAllUsers();
         for (User u : users) {
-            if (u.getId().equals(inputId))
-               return;
+            if (u.getId().equals(inputId)){
+                return;
+            }
         }
         throw new Exception("No such ID here");
+    }
+
+    public void deleteByID(String inputId){
+        repository.deleteByID(inputId);
     }
 }
